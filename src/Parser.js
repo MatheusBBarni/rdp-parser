@@ -1,12 +1,18 @@
 const { Tokenizer } = require('./Tokenizer')
 const {
   NUMERIC_LITERAL,
+  STRING_LITERAL,
+  EXPRESSION_STATEMENT,
+  BLOCK_STATEMENT,
+  EMPTY_STATEMENT,
+} = require('./types')
+const {
   NUMBER,
   STRING,
-  STRING_LITERAL,
   SEMI_COLON,
-  EXPRESSION_STATEMENT
-} = require('./types')
+  OPEN_CURLY_BRACE,
+  CLOSE_CURLY_BRACE
+} = require('./tokens')
 
 class Parser {
   constructor() {
@@ -29,10 +35,10 @@ class Parser {
     }
   }
 
-  StatementList() {
+  StatementList(stopLookAhead = null) {
     const statementList = [this.Statement()]
 
-    while (this._lookahead !== null) {
+    while (this._lookahead !== null && this._lookahead.type !== stopLookAhead) {
       statementList.push(this.Statement())
     }
 
@@ -40,7 +46,14 @@ class Parser {
   }
 
   Statement() {
-    return this.ExpressionStatement()
+    switch (this._lookahead.type) {
+      case SEMI_COLON:
+        return this.EmptyStatement()
+      case OPEN_CURLY_BRACE:
+        return this.BlockStatement()
+      default:
+        return this.ExpressionStatement()
+    }
   }
 
   ExpressionStatement() {
@@ -49,6 +62,26 @@ class Parser {
     return {
       type: EXPRESSION_STATEMENT,
       expression
+    }
+  }
+
+  BlockStatement() {
+    this._eat(OPEN_CURLY_BRACE)
+
+    const body = this._lookahead.type !== CLOSE_CURLY_BRACE ? this.StatementList(CLOSE_CURLY_BRACE) : []
+
+    this._eat(CLOSE_CURLY_BRACE)
+
+    return {
+      type: BLOCK_STATEMENT,
+      body
+    }
+  }
+
+  EmptyStatement() {
+    this._eat(SEMI_COLON)
+    return {
+      type: EMPTY_STATEMENT
     }
   }
 

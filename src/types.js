@@ -1,11 +1,7 @@
 module.exports = {
-  NUMBER: 'NUMBER',
-  STRING: 'STRING',
-  SEMI_COLON: ';',
-  WHITESPACE: null,
-  SL_COMMENT: null,
-  ML_COMMENT: null,
   STRING_LITERAL: 'StringLiteral',
   NUMERIC_LITERAL: 'NumericLiteral',
+  BLOCK_STATEMENT: 'BlockStatement',
+  EMPTY_STATEMENT: 'EmptyStatement',
   EXPRESSION_STATEMENT: 'ExpressionStatement'
 }

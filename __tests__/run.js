@@ -5,8 +5,10 @@ const { Parser } = require('../src/Parser')
 const parser = new Parser()
 
 const tests = [
-  require('./literals-test.js'),
-  require('./statement-list-test')
+  require('./block-test'),
+  require('./literals-test'),
+  require('./statement-list-test'),
+  require('./empty-statement-test')
 ]
 
 function test(program, expected) {
@@ -16,4 +18,4 @@ function test(program, expected) {
 
 tests.forEach(testRun => testRun(test))
 
-console.log('All tests passed')
+console.log('All assertions passed!')
