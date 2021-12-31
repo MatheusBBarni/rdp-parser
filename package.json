@@ -1,0 +1,12 @@
+{
+  "name": "parser-from-scratch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:run": "node __tests__/run.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
