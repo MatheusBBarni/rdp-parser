@@ -1,5 +1,12 @@
 const { Tokenizer } = require('./Tokenizer')
-const { NUMERIC_LITERAL, NUMBER, STRING, STRING_LITERAL } = require('./types')
+const {
+  NUMERIC_LITERAL,
+  NUMBER,
+  STRING,
+  STRING_LITERAL,
+  SEMI_COLON,
+  EXPRESSION_STATEMENT
+} = require('./types')
 
 class Parser {
   constructor() {
@@ -18,8 +25,35 @@ class Parser {
   Program() {
     return {
       type: 'Program',
-      body: this.Literal()
+      body: this.StatementList()
     }
+  }
+
+  StatementList() {
+    const statementList = [this.Statement()]
+
+    while (this._lookahead !== null) {
+      statementList.push(this.Statement())
+    }
+
+    return statementList
+  }
+
+  Statement() {
+    return this.ExpressionStatement()
+  }
+
+  ExpressionStatement() {
+    const expression = this.Expression()
+    this._eat(SEMI_COLON)
+    return {
+      type: EXPRESSION_STATEMENT,
+      expression
+    }
+  }
+
+  Expression() {
+    return this.Literal()
   }
 
   Literal() {
