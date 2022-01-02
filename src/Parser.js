@@ -5,13 +5,18 @@ const {
   EXPRESSION_STATEMENT,
   BLOCK_STATEMENT,
   EMPTY_STATEMENT,
+  BINARY_EXPRESSION,
 } = require('./types')
 const {
   NUMBER,
   STRING,
   SEMI_COLON,
   OPEN_CURLY_BRACE,
-  CLOSE_CURLY_BRACE
+  CLOSE_CURLY_BRACE,
+  ADDITIVE_OPERATOR,
+  MULTIPLICATIVE_OPERATOR,
+  OPEN_PARENTHESIS,
+  CLOSE_PARENTHESIS
 } = require('./tokens')
 
 class Parser {
@@ -28,6 +33,7 @@ class Parser {
 
     return this.Program()
   }
+
   Program() {
     return {
       type: 'Program',
@@ -86,7 +92,51 @@ class Parser {
   }
 
   Expression() {
-    return this.Literal()
+    return this.AdditiveExpression()
+  }
+
+  AdditiveExpression() {
+    return this._BinaryExpression('MultiplicativeExpression', ADDITIVE_OPERATOR)
+  }
+
+  MultiplicativeExpression() {
+    return this._BinaryExpression('PrimaryExpression', MULTIPLICATIVE_OPERATOR)
+  }
+
+  _BinaryExpression(builderName, operatorToken) {
+    let left = this[builderName]()
+
+    while (this._lookahead.type === operatorToken) {
+      const operator = this._eat(operatorToken).value
+
+      const right = this[builderName]()
+
+      left = {
+        type: BINARY_EXPRESSION,
+        operator,
+        left,
+        right
+      }
+    }
+
+    return left
+  }
+
+  PrimaryExpression() {
+    switch (this._lookahead.type) {
+      case OPEN_PARENTHESIS:
+        return this.ParenthesizedExpression()
+      default:
+        return this.Literal()
+    }
+  }
+
+  ParenthesizedExpression() {
+    this._eat(OPEN_PARENTHESIS)
+    const expression = this.Expression()
+    this._eat(CLOSE_PARENTHESIS)
+
+    return expression
   }
 
   Literal() {

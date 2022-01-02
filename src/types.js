@@ -4,5 +4,6 @@ module.exports = {
   NUMERIC_LITERAL: 'NumericLiteral',
   BLOCK_STATEMENT: 'BlockStatement',
   EMPTY_STATEMENT: 'EmptyStatement',
-  EXPRESSION_STATEMENT: 'ExpressionStatement'
+  BINARY_EXPRESSION: 'BinaryExpression',
+  EXPRESSION_STATEMENT: 'ExpressionStatement',
 }

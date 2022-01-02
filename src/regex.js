@@ -7,5 +7,9 @@ module.exports = {
   SL_COMMENT_REGEX: /^\/\/.*/,
   OPEN_CURLY_BRACE_REGEX: /^\{/,
   CLOSE_CURLY_BRACE_REGEX: /^\}/,
+  OPEN_PARENTHESIS_REGEX: /^\(/,
+  CLOSE_PARENTHESIS_REGEX: /^\)/,
+  ADDITIVE_OPERATOR_REGEX: /^[+\-]/,
   ML_COMMENT_REGEX: /^\/\*[\s\S]*?\*\//,
+  MULTIPLICATIVE_OPERATOR_REGEX: /^[*\/]/,
 }

@@ -8,7 +8,8 @@ const tests = [
   require('./block-test'),
   require('./literals-test'),
   require('./statement-list-test'),
-  require('./empty-statement-test')
+  require('./empty-statement-test'),
+  require('./math-test')
 ]
 
 function test(program, expected) {
