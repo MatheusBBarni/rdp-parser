@@ -11,6 +11,7 @@ const tests = [
   require('./empty-statement-test'),
   require('./math-test'),
   require('./assignment-test'),
+  require('./variable-test'),
 ]
 
 function test(program, expected) {

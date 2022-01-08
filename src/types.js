@@ -6,6 +6,8 @@ module.exports = {
   BLOCK_STATEMENT: 'BlockStatement',
   EMPTY_STATEMENT: 'EmptyStatement',
   BINARY_EXPRESSION: 'BinaryExpression',
+  VariableStatement: 'VariableStatement',
+  VariableDeclaration: 'VariableDeclaration',
   EXPRESSION_STATEMENT: 'ExpressionStatement',
   AssignmentExpression: 'AssignmentExpression',
 }

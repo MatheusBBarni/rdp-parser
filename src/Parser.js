@@ -8,6 +8,8 @@ const {
   BINARY_EXPRESSION,
   AssignmentExpression,
   Identifier,
+  VariableStatement,
+  VariableDeclaration,
 } = require('./types')
 const {
   NUMBER,
@@ -21,7 +23,9 @@ const {
   CLOSE_PARENTHESIS,
   SIMPLE_ASSIGN,
   COMPLEX_ASSIGN,
-  IDENTIFIER
+  IDENTIFIER,
+  LET,
+  COMMA
 } = require('./tokens')
 
 class Parser {
@@ -62,9 +66,52 @@ class Parser {
         return this.EmptyStatement()
       case OPEN_CURLY_BRACE:
         return this.BlockStatement()
+      case LET:
+        return this.VariableStatement()
       default:
         return this.ExpressionStatement()
     }
+  }
+
+  VariableStatement() {
+    this._eat(LET)
+    const declarations = this.VariableDeclarationList()
+    this._eat(SEMI_COLON)
+
+    return {
+      type: VariableStatement,
+      declarations,
+    }
+  }
+
+  VariableDeclarationList() {
+    const declarations = []
+
+    do {
+      declarations.push(this.VariableDeclaration())
+    } while (this._lookahead.type === COMMA && this._eat(COMMA))
+
+    return declarations
+  }
+
+  VariableDeclaration() {
+    const id = this.Identifier()
+
+    const init =
+      this._lookahead.type !== SEMI_COLON && this._lookahead.type !== COMMA
+        ? this.VariableInitializer()
+        : null
+
+    return {
+      type: VariableDeclaration,
+      id,
+      init,
+    }
+  }
+
+  VariableInitializer() {
+    this._eat(SIMPLE_ASSIGN)
+    return this.AssignmentExpression()
   }
 
   ExpressionStatement() {

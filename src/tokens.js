@@ -1,4 +1,6 @@
 module.exports = {
+  LET: 'let',
+  COMMA: ',',
   NUMBER: 'NUMBER',
   STRING: 'STRING',
   SEMI_COLON: ';',

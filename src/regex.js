@@ -1,4 +1,6 @@
 module.exports = {
+  LET_REGEX: /^\blet\b/,
+  COMMAN_REGEX: /^,/,
   SEMI_COLON_REGEX: /^;/,
   NUMBER_REGEX: /^\d+/,
   WHITESPACE_REGEX: /^\s+/,
