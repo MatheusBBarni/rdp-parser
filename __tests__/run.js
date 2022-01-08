@@ -9,7 +9,8 @@ const tests = [
   require('./literals-test'),
   require('./statement-list-test'),
   require('./empty-statement-test'),
-  require('./math-test')
+  require('./math-test'),
+  require('./assignment-test'),
 ]
 
 function test(program, expected) {

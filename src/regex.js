@@ -2,6 +2,7 @@ module.exports = {
   SEMI_COLON_REGEX: /^;/,
   NUMBER_REGEX: /^\d+/,
   WHITESPACE_REGEX: /^\s+/,
+  IDENTIFIER_REGEX: /^\w+/,
   STRING_DQ_REGEX: /^"[^"]*"/,
   STRING_SQ_REGEX: /^'[^']*'/,
   SL_COMMENT_REGEX: /^\/\/.*/,
@@ -10,6 +11,8 @@ module.exports = {
   OPEN_PARENTHESIS_REGEX: /^\(/,
   CLOSE_PARENTHESIS_REGEX: /^\)/,
   ADDITIVE_OPERATOR_REGEX: /^[+\-]/,
+  SIMPLE_ASSIGN_REGEX: /^=/,
+  COMPLEX_ASSIGN_REGEX: /^[\*\/\+\-]=/,
   ML_COMMENT_REGEX: /^\/\*[\s\S]*?\*\//,
   MULTIPLICATIVE_OPERATOR_REGEX: /^[*\/]/,
 }
