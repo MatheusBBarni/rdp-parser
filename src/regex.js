@@ -1,5 +1,7 @@
 module.exports = {
   LET_REGEX: /^\blet\b/,
+  IF_REGEX: /^\bif\b/,
+  ELSE_REGEX: /^\belse\b/,
   COMMAN_REGEX: /^,/,
   SEMI_COLON_REGEX: /^;/,
   NUMBER_REGEX: /^\d+/,
@@ -16,5 +18,6 @@ module.exports = {
   SIMPLE_ASSIGN_REGEX: /^=/,
   COMPLEX_ASSIGN_REGEX: /^[\*\/\+\-]=/,
   ML_COMMENT_REGEX: /^\/\*[\s\S]*?\*\//,
+  RELATIONAL_OPERATOR_REGEX: /^[><]=?/,
   MULTIPLICATIVE_OPERATOR_REGEX: /^[*\/]/,
 }

@@ -10,6 +10,8 @@ const {
   Identifier,
   VariableStatement,
   VariableDeclaration,
+  IfStatement,
+  AdditiveExpression,
 } = require('./types')
 const {
   NUMBER,
@@ -25,7 +27,10 @@ const {
   COMPLEX_ASSIGN,
   IDENTIFIER,
   LET,
-  COMMA
+  COMMA,
+  IF,
+  ELSE,
+  RELATIONAL_OPERATOR
 } = require('./tokens')
 
 class Parser {
@@ -64,12 +69,37 @@ class Parser {
     switch (this._lookahead.type) {
       case SEMI_COLON:
         return this.EmptyStatement()
+      case IF:
+        return this.IfStatement()
       case OPEN_CURLY_BRACE:
         return this.BlockStatement()
       case LET:
         return this.VariableStatement()
       default:
         return this.ExpressionStatement()
+    }
+  }
+
+  IfStatement() {
+    this._eat(IF)
+
+    this._eat(OPEN_PARENTHESIS)
+
+    const test = this.Expression()
+
+    this._eat(CLOSE_PARENTHESIS)
+
+    const consequent = this.Statement()
+
+    const alternate = this._lookahead !== null && this._lookahead.type === ELSE
+      ? this._eat(ELSE) && this.Statement()
+      : null
+
+    return {
+      type: IfStatement,
+      test,
+      consequent,
+      alternate,
     }
   }
 
@@ -148,7 +178,7 @@ class Parser {
   }
 
   AssignmentExpression() {
-    const left = this.AdditiveExpression()
+    const left = this.RelationalExpression()
 
     if (!this._isAssignmentOperator(this._lookahead.type)) return left
 
@@ -158,6 +188,10 @@ class Parser {
       left: this._checkValidAssignmentTarget(left),
       right: this.AssignmentExpression(),
     }
+  }
+
+  RelationalExpression() {
+    return this._BinaryExpression(AdditiveExpression, RELATIONAL_OPERATOR)
   }
 
   LeftHandSideExpression() {
