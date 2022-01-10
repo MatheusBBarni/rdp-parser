@@ -15,6 +15,7 @@ module.exports = {
   SL_COMMENT_REGEX: /^\/\/.*/,
   LOGICAL_OR_REGEX: /^\|\|/,
   LOGICAL_AND_REGEX: /^&&/,
+  LOGICAL_NOT_REGEX: /^!/,
   OPEN_CURLY_BRACE_REGEX: /^\{/,
   CLOSE_CURLY_BRACE_REGEX: /^\}/,
   OPEN_PARENTHESIS_REGEX: /^\(/,

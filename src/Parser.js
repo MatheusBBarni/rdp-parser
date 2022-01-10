@@ -16,6 +16,7 @@ const {
   BooleanLiteral,
   NullLiteral,
   LogicalExpression,
+  UnaryExpression,
 } = require('./types')
 const {
   NUMBER,
@@ -40,7 +41,8 @@ const {
   FALSE,
   NULL,
   LOGICAL_AND,
-  LOGICAL_OR
+  LOGICAL_OR,
+  LOGICAL_NOT
 } = require('./tokens')
 
 class Parser {
@@ -209,7 +211,7 @@ class Parser {
   }
 
   LeftHandSideExpression() {
-    return this.Identifier()
+    return this.PrimaryExpression()
   }
 
   Identifier() {
@@ -269,7 +271,29 @@ class Parser {
   }
 
   MultiplicativeExpression() {
-    return this._BinaryExpression('PrimaryExpression', MULTIPLICATIVE_OPERATOR)
+    return this._BinaryExpression('UnaryExpression', MULTIPLICATIVE_OPERATOR)
+  }
+
+  UnaryExpression() {
+    let operator
+    switch (this._lookahead.type) {
+      case ADDITIVE_OPERATOR:
+        operator = this._eat(ADDITIVE_OPERATOR).value
+        break
+      case LOGICAL_NOT:
+        operator = this._eat(LOGICAL_NOT).value
+        break
+    }
+
+    if (operator != null) {
+      return {
+        type: UnaryExpression,
+        operator,
+        argument: this.UnaryExpression()
+      }
+    }
+
+    return this.LeftHandSideExpression()
   }
 
   _BinaryExpression(builderName, operatorToken) {
@@ -298,6 +322,8 @@ class Parser {
     switch (this._lookahead.type) {
       case OPEN_PARENTHESIS:
         return this.ParenthesizedExpression()
+      case IDENTIFIER:
+        return this.Identifier()
       default:
         return this.LeftHandSideExpression()
     }
