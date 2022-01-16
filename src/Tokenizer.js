@@ -29,7 +29,9 @@ const {
   LOGICAL_NOT_REGEX,
   WHILE_REGEX,
   DO_REGEX,
-  FOR_REGEX
+  FOR_REGEX,
+  DEF_REGEX,
+  RETURN_REGEX
 } = require("./regex")
 const {
   NUMBER,
@@ -61,7 +63,9 @@ const {
   LOGICAL_NOT,
   WHILE,
   DO,
-  FOR
+  FOR,
+  DEF,
+  RETURN
 } = require("./tokens")
 
 const Spec = [
@@ -95,6 +99,9 @@ const Spec = [
   [WHILE_REGEX, WHILE],
   [DO_REGEX, DO],
   [FOR_REGEX, FOR],
+
+  [DEF_REGEX, DEF],
+  [RETURN_REGEX, RETURN],
 
   [SEMI_COLON_REGEX, SEMI_COLON],
 

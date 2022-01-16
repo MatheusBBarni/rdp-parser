@@ -11,6 +11,8 @@ module.exports = {
   WhileStatement: 'WhileStatement',
   ForStatement: 'ForStatement',
   DoWhileStatement: 'DoWhileStatement',
+  FunctionDeclaration: 'FunctionDeclaration',
+  ReturnStatement: 'ReturnStatement',
   UnaryExpression: 'UnaryExpression',
   BINARY_EXPRESSION: 'BinaryExpression',
   LogicalExpression: 'LogicalExpression',

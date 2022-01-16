@@ -20,6 +20,7 @@ const tests = [
   require('./while-test'),
   require('./for-test'),
   require('./do-while-test'),
+  require('./function-declaration-test'),
 ]
 
 function test(program, expected) {

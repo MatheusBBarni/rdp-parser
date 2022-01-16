@@ -4,6 +4,8 @@ module.exports = {
   LET: 'let',
   FOR: 'for',
   DO: 'do',
+  DEF: 'def',
+  RETURN: 'return',
   WHILE: 'while',
   COMMA: ',',
   NULL: 'null',

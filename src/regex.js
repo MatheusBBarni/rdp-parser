@@ -3,6 +3,8 @@ module.exports = {
   IF_REGEX: /^\bif\b/,
   FOR_REGEX: /^\bfor\b/,
   DO_REGEX: /^\do\b/,
+  DEF_REGEX: /^\bdef\b/,
+  RETURN_REGEX: /^\breturn\b/,
   WHILE_REGEX: /^\bwhile\b/,
   ELSE_REGEX: /^\belse\b/,
   NULL_REGEX: /^\bnull\b/,

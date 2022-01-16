@@ -20,6 +20,8 @@ const {
   WhileStatement,
   DoWhileStatement,
   ForStatement,
+  FunctionDeclaration,
+  ReturnStatement,
 } = require('./types')
 const {
   NUMBER,
@@ -48,7 +50,9 @@ const {
   LOGICAL_NOT,
   WHILE,
   DO,
-  FOR
+  FOR,
+  DEF,
+  RETURN
 } = require('./tokens')
 
 class Parser {
@@ -93,12 +97,58 @@ class Parser {
         return this.BlockStatement()
       case LET:
         return this.VariableStatement()
+      case DEF:
+        return this.FunctionDeclaration()
+      case RETURN:
+        return this.ReturnStatement()
       case WHILE:
       case DO:
       case FOR:
         return this.IterationStatement()
       default:
         return this.ExpressionStatement()
+    }
+  }
+
+  FunctionDeclaration() {
+    this._eat(DEF)
+    const name = this.Identifier()
+
+    this._eat(OPEN_PARENTHESIS)
+
+    const params = 
+      this._lookahead.type !== CLOSE_PARENTHESIS ? this.FormalParameterList() : []
+
+    this._eat(CLOSE_PARENTHESIS)
+
+    const body = this.BlockStatement()
+
+    return {
+      type: FunctionDeclaration,
+      name,
+      params,
+      body,
+    }
+  }
+
+  FormalParameterList() {
+    const params = []
+
+    do {
+      params.push(this.Identifier())
+    } while (this._lookahead.type === COMMA && this._eat(COMMA))
+
+    return params
+  }
+
+  ReturnStatement() {
+    this._eat(RETURN)
+    const argument = this._lookahead.type !== SEMI_COLON ? this.Expression() : null
+    this._eat(SEMI_COLON)
+
+    return {
+      type: ReturnStatement,
+      argument,
     }
   }
 
