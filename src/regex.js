@@ -1,6 +1,9 @@
 module.exports = {
   LET_REGEX: /^\blet\b/,
   IF_REGEX: /^\bif\b/,
+  FOR_REGEX: /^\bfor\b/,
+  DO_REGEX: /^\do\b/,
+  WHILE_REGEX: /^\bwhile\b/,
   ELSE_REGEX: /^\belse\b/,
   NULL_REGEX: /^\bnull\b/,
   TRUE_REGEX: /^\btrue\b/,

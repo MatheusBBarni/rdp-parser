@@ -26,7 +26,10 @@ const {
   NULL_REGEX,
   LOGICAL_AND_REGEX,
   LOGICAL_OR_REGEX,
-  LOGICAL_NOT_REGEX
+  LOGICAL_NOT_REGEX,
+  WHILE_REGEX,
+  DO_REGEX,
+  FOR_REGEX
 } = require("./regex")
 const {
   NUMBER,
@@ -55,7 +58,10 @@ const {
   NULL,
   LOGICAL_AND,
   LOGICAL_OR,
-  LOGICAL_NOT
+  LOGICAL_NOT,
+  WHILE,
+  DO,
+  FOR
 } = require("./tokens")
 
 const Spec = [
@@ -85,6 +91,10 @@ const Spec = [
   [TRUE_REGEX, TRUE],
   [FALSE_REGEX, FALSE],
   [NULL_REGEX, NULL],
+
+  [WHILE_REGEX, WHILE],
+  [DO_REGEX, DO],
+  [FOR_REGEX, FOR],
 
   [SEMI_COLON_REGEX, SEMI_COLON],
 

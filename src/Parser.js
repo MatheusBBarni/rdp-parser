@@ -17,6 +17,9 @@ const {
   NullLiteral,
   LogicalExpression,
   UnaryExpression,
+  WhileStatement,
+  DoWhileStatement,
+  ForStatement,
 } = require('./types')
 const {
   NUMBER,
@@ -42,7 +45,10 @@ const {
   NULL,
   LOGICAL_AND,
   LOGICAL_OR,
-  LOGICAL_NOT
+  LOGICAL_NOT,
+  WHILE,
+  DO,
+  FOR
 } = require('./tokens')
 
 class Parser {
@@ -87,9 +93,91 @@ class Parser {
         return this.BlockStatement()
       case LET:
         return this.VariableStatement()
+      case WHILE:
+      case DO:
+      case FOR:
+        return this.IterationStatement()
       default:
         return this.ExpressionStatement()
     }
+  }
+
+  IterationStatement() {
+    switch (this._lookahead.type) {
+      case WHILE:
+        return this.WhileStatement()
+      case DO:
+        return this.DoWhileStatement()
+      case FOR:
+        return this.ForStatement()
+    }
+  }
+
+  WhileStatement() {
+    this._eat(WHILE)
+
+    this._eat(OPEN_PARENTHESIS)
+    const test = this.Expression()
+    this._eat(CLOSE_PARENTHESIS)
+
+    const body = this.Statement()
+
+    return {
+      type: WhileStatement,
+      test,
+      body,
+    }
+  }
+
+  DoWhileStatement() {
+    this._eat(DO)
+
+    const body = this.Statement()
+
+    this._eat(WHILE)
+
+    this._eat(OPEN_PARENTHESIS)
+    const test = this.Expression()
+    this._eat(CLOSE_PARENTHESIS)
+    this._eat(SEMI_COLON)
+
+    return {
+      type: DoWhileStatement,
+      body,
+      test,
+    }
+  }
+
+  ForStatement() {
+    this._eat(FOR)
+    this._eat(OPEN_PARENTHESIS)
+
+    const init = this._lookahead.type !== SEMI_COLON ? this.ForStatementInit() : null
+    this._eat(SEMI_COLON)
+
+    const test = this._lookahead.type !== SEMI_COLON ? this.Expression() : null
+    this._eat(SEMI_COLON)
+
+    const update = this._lookahead.type !== CLOSE_PARENTHESIS ? this.Expression() : null
+    this._eat(CLOSE_PARENTHESIS)
+
+    const body = this.Statement()
+
+    return {
+      type: ForStatement,
+      init,
+      test,
+      update,
+      body,
+    }
+  }
+
+  ForStatementInit() {
+    if (this._lookahead.type === LET) {
+      return this.VariableStatementInit()
+    }
+
+    return this.Expression()
   }
 
   IfStatement() {
@@ -115,15 +203,21 @@ class Parser {
     }
   }
 
-  VariableStatement() {
+  VariableStatementInit() {
     this._eat(LET)
     const declarations = this.VariableDeclarationList()
-    this._eat(SEMI_COLON)
 
     return {
       type: VariableStatement,
       declarations,
     }
+  }
+
+  VariableStatement() {
+    const variableStatement = this.VariableStatementInit()
+    this._eat(SEMI_COLON)
+
+    return variableStatement
   }
 
   VariableDeclarationList() {

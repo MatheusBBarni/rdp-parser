@@ -17,6 +17,9 @@ const tests = [
   require('./equality-test'),
   require('./logical-test'),
   require('./unary-test'),
+  require('./while-test'),
+  require('./for-test'),
+  require('./do-while-test'),
 ]
 
 function test(program, expected) {
